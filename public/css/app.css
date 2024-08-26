@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-/*!
+/*
  * Bootstrap v4.5.3 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
  * Copyright 2011-2020 Twitter, Inc.
@@ -47,7 +47,13 @@
 html {
   font-family: sans-serif;
   line-height: 1.15;
-  -webkit-text-size-adjust: 100%;
+-webkit-text-size-adjust: 100%;
+    /* Safari and older Android browsers */
+    -moz-text-size-adjust: 100%;
+    /* Firefox for Android */
+    -ms-text-size-adjust: 100%;
+    /* Internet Explorer Mobile */
+    text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -233,7 +239,6 @@ caption {
 
 th {
   text-align: inherit;
-  text-align: -webkit-match-parent;
 }
 
 label {

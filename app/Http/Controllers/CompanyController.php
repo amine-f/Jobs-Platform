@@ -10,11 +10,6 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class CompanyController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         if (auth()->user()->company) {
@@ -25,12 +20,6 @@ class CompanyController extends Controller
         return view('company.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validateCompany($request);
@@ -44,12 +33,6 @@ class CompanyController extends Controller
         return redirect()->route('account.authorSection');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit()
     {
         $company = auth()->user()->company;
@@ -57,14 +40,13 @@ class CompanyController extends Controller
         return view('company.edit', compact('company', 'categories'));
     }
 
-
     public function update(Request $request, $id)
     {
         $this->validateCompanyUpdate($request);
 
         $company = auth()->user()->company;
         if ($this->companyUpdate($company, $request)) {
-            Alert::toast('Company created!', 'success');
+            Alert::toast('Company updated!', 'success');
             return redirect()->route('account.authorSection');
         }
         Alert::toast('Failed!', 'error');
@@ -82,17 +64,19 @@ class CompanyController extends Controller
             'cover_img' => 'sometimes|image|max:3999'
         ]);
     }
+
     protected function validateCompanyUpdate(Request $request)
     {
         return $request->validate([
             'title' => 'required|min:5',
             'description' => 'required|min:5',
-            'logo' => 'someiimes|image|max:2999',
+            'logo' => 'sometimes|image|max:2999',
             'category' => 'required',
             'website' => 'required|string',
             'cover_img' => 'sometimes|image|max:3999'
         ]);
     }
+
     protected function companySave(Company $company, Request $request)
     {
         $company->user_id = auth()->user()->id;
@@ -101,30 +85,15 @@ class CompanyController extends Controller
         $company->company_category_id = $request->category;
         $company->website = $request->website;
 
-        //logo
-        $fileNameToStore = $this->getFileName($request->file('logo'));
-        $logoPath = $request->file('logo')->storeAs('public/companies/logos', $fileNameToStore);
-        if ($company->logo) {
-            Storage::delete('public/companies/logos/' . basename($company->logo));
-        }
-        $company->logo = 'storage/companies/logos/' . $fileNameToStore;
+        // Save logo
+        $company->logo = $this->storeFile($request->file('logo'), 'public/companies/logos', $company->logo);
 
-        //cover image 
-        if ($request->hasFile('cover_img')) {
-            $fileNameToStore = $this->getFileName($request->file('cover_img'));
-            $coverPath = $request->file('cover_img')->storeAs('public/companies/cover', $fileNameToStore);
-            if ($company->cover_img) {
-                Storage::delete('public/companies/cover/' . basename($company->cover_img));
-            }
-            $company->cover_img = 'storage/companies/cover/' . $fileNameToStore;
-        } else {
-            $company->cover_img = 'nocover';
-        }
+        // Save cover image if exists
+        $company->cover_img = $request->hasFile('cover_img')
+            ? $this->storeFile($request->file('cover_img'), 'public/companies/cover', $company->cover_img)
+            : $company->cover_img;
 
-        if ($company->save()) {
-            return true;
-        }
-        return false;
+        return $company->save();
     }
 
     protected function companyUpdate(Company $company, Request $request)
@@ -135,44 +104,48 @@ class CompanyController extends Controller
         $company->company_category_id = $request->category;
         $company->website = $request->website;
 
-        //logo should exist but still checking for the name
+        // Update logo if uploaded
         if ($request->hasFile('logo')) {
-            $fileNameToStore = $this->getFileName($request->file('logo'));
-            $logoPath = $request->file('logo')->storeAs('public/companies/logos', $fileNameToStore);
-            if ($company->logo) {
-                Storage::delete('public/companies/logos/' . basename($company->logo));
-            }
-            $company->logo = 'storage/companies/logos/' . $fileNameToStore;
+            $company->logo = $this->storeFile($request->file('logo'), 'public/companies/logos', $company->logo);
         }
 
-        //cover image 
+        // Update cover image if uploaded
         if ($request->hasFile('cover_img')) {
-            $fileNameToStore = $this->getFileName($request->file('cover_img'));
-            $coverPath = $request->file('cover_img')->storeAs('public/companies/cover', $fileNameToStore);
-            if ($company->cover_img) {
-                Storage::delete('public/companies/cover/' . basename($company->cover_img));
-            }
-            $company->cover_img = 'storage/companies/cover/' . $fileNameToStore;
+            $company->cover_img = $this->storeFile($request->file('cover_img'), 'public/companies/cover', $company->cover_img);
         }
-        $company->cover_img = 'nocover';
-        if ($company->save()) {
-            return true;
-        }
-        return false;
+
+        return $company->save();
     }
-    protected function getFileName($file)
+
+    protected function storeFile($file, $path, $existingFile = null)
     {
-        $fileName = $file->getClientOriginalName();
-        $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
-        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
-        return $actualFileName . time() . '.' . $fileExtension;
+        // Generate unique filename
+        $fileNameToStore = time() . '_' . $file->getClientOriginalName();
+        // Store file
+        $filePath = $file->storeAs($path, $fileNameToStore);
+
+        // Delete old file if exists
+        if ($existingFile) {
+            Storage::delete($existingFile);
+        }
+
+        return 'storage/' . str_replace('public/', '', $filePath);
     }
 
     public function destroy()
     {
-        Storage::delete('public/companies/logos/' . basename(auth()->user()->company->logo));
-        if (auth()->user()->company->delete()) {
-            return redirect()->route('account.authorSection');
+        $company = auth()->user()->company;
+        if ($company) {
+            // Delete logo
+            Storage::delete('public/companies/logos/' . basename($company->logo));
+            // Delete cover image if exists
+            if ($company->cover_img !== 'nocover') {
+                Storage::delete('public/companies/cover/' . basename($company->cover_img));
+            }
+
+            if ($company->delete()) {
+                return redirect()->route('account.authorSection');
+            }
         }
         return redirect()->route('account.authorSection');
     }
