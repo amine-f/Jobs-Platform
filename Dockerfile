@@ -17,12 +17,11 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory
 WORKDIR /var/www/html
 
-# Copy the existing application directory contents
-COPY . /var/www/html
+# Copy the public directory to the Apache root directory
+COPY public/ /var/www/html
 
-# Set permissions for the storage and bootstrap/cache directories
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Copy the rest of the application files
+COPY . /var/www
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
