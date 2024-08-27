@@ -23,7 +23,14 @@ COPY . /var/www/html
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install PHP dependencies
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
+
+# Ensure the public directory is served by Apache
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+
+# Update Apache configuration to use the new document root
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Expose port 80
 EXPOSE 80
