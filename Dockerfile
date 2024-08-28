@@ -26,7 +26,7 @@ WORKDIR /var/www/html
 COPY public/ /var/www/html/
 
 # Copy the existing application directory contents
-COPY . /var/www/html
+#COPY . /var/www/html
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
