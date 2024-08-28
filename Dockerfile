@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
     && docker-php-ext-install zip \
-    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install pdo_pgsql \
     && a2enmod rewrite
 
 # Set the working directory
