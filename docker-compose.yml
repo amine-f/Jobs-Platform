@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    ports:
+      - "8000:80"
+    environment:
+      - DB_HOST=dpg-cr71c53v2p9s73cl0l9g-a
+      - DB_PORT=5432
+      - DB_DATABASE=job_lister
+      - DB_USERNAME=job_lister_user
+      - DB_PASSWORD=StD7qazTTeoWy21VlJnU3qeSrm8dJcp9
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: job_lister
+      POSTGRES_USER: job_lister_user
+      POSTGRES_PASSWORD: StD7qazTTeoWy21VlJnU3qeSrm8dJcp9
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
