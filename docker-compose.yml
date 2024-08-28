@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:80"
     environment:
-      - DB_HOST=dpg-cr71c53v2p9s73cl0l9g-a.frankfurt-postgres.render.com
+      - DB_HOST=postgresql://job_lister_user:StD7qazTTeoWy21VlJnU3qeSrm8dJcp9@dpg-cr71c53v2p9s73cl0l9g-a.frankfurt-postgres.render.com/job_lister
       - DB_PORT=5432
       - DB_DATABASE=job_lister
       - DB_USERNAME=job_lister_user
