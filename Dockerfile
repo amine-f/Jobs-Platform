@@ -22,6 +22,9 @@ RUN a2enmod rewrite
 # Set the working directory
 WORKDIR /var/www/html
 
+# Copy the public directory contents into the web root
+COPY public/ /var/www/html/
+
 # Copy the existing application directory contents
 COPY . /var/www/html
 
