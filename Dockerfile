@@ -1,7 +1,7 @@
 # Use the official PHP image with Apache
 FROM php:7.4-apache
 
-# Install system dependencies and PHP extensions
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -10,18 +10,20 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
-    && docker-php-ext-install zip \
-    && docker-php-ext-install pdo_pgsql \
-    && a2enmod rewrite
+    && docker-php-ext-install zip
+
+# Install PostgreSQL extension
+RUN apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo_pgsql
+
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
 # Set the working directory
 WORKDIR /var/www/html
 
-# Copy the public directory to the Apache root directory
-COPY public/ /var/www/html
-
-# Copy the rest of the application files
-COPY . /var/www
+# Copy the existing application directory contents
+COPY . /var/www/html
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
