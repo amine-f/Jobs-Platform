@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'JobsGate'),
+    'name' => env('APP_NAME', 'Jobs-Platform'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://jobs-platform-ibik.onrender.com'),
 
     'asset_url' => env('ASSET_URL', null),
 
