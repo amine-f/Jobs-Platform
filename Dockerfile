@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install zip \
     && docker-php-ext-install pdo_pgsql \
     && a2enmod rewrite
-
+# Copy the Apache configuration file
+COPY custom-apache.conf /etc/apache2/sites-available/000-default.conf
 # Set the working directory to the Laravel project
 WORKDIR /var/www/html/
 
