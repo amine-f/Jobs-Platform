@@ -7,8 +7,9 @@ services:
       dockerfile: Dockerfile
     container_name: laravel_app
     ports:
-      - "8000:80"
+      - "10000:80"
     environment:
+      - PORT=10000
       - DB_HOST=db
       - DB_PORT=5432
       - DB_DATABASE=job_lister

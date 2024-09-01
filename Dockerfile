@@ -34,7 +34,7 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 10000
 
 # Command to run the application
 CMD ["apache2-foreground"]
