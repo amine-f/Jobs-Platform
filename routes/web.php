@@ -27,7 +27,7 @@ Route::middleware('auth')->prefix('account')->group(function () {
   Route::get('deactivate', [AccountController::class, 'deactivateView'])->name('account.deactivate');
   Route::get('change-password', [AccountController::class, 'changePasswordView'])->name('account.changePassword');
   Route::delete('delete', [AccountController::class, 'deleteAccount'])->name('account.delete');
-  Route::put('change-password', [AccountController::class, 'changePassword'])->name('account.changePassword');
+  //Route::put('change-password', [AccountController::class, 'changePassword'])->name('account.changePassword');
   //savedJobs
   Route::get('my-saved-jobs', [savedJobController::class, 'index'])->name('savedJob.index');
   Route::get('my-saved-jobs/{id}', [savedJobController::class, 'store'])->name('savedJob.store');

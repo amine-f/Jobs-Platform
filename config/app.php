@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://glad-marja-welink-1cb19867.koyeb.app/'),
+    'url' => env('APP_URL', 'https://jobs-platform-ibik.onrender.coms'),
 
     'asset_url' => env('ASSET_URL', null),
 
