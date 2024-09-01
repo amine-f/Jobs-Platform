@@ -33,6 +33,8 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 # Ensure correct permissions for Laravel directories
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Add this in your Dockerfile or Apache config
+RUN sed -i 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf
 # Expose port 80
 EXPOSE 10000
 
