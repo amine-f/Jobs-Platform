@@ -34,7 +34,7 @@ Route::middleware('auth')->prefix('account')->group(function () {
   Route::delete('my-saved-jobs/{id}', [savedJobController::class, 'destroy'])->name('savedJob.destroy');
   //applyjobs
   Route::get('apply-job', [AccountController::class, 'applyJobView'])->name('account.applyJob');
-  Route::post('apply-job', [AccountController::class, 'applyJob'])->name('account.applyJob');
+  Route::post('apply-job', [AccountController::class, 'applyJob'])->name('account.applyJobGuest');
 
   //Admin Role Routes
   Route::group(['middleware' => ['role:admin']], function () {
