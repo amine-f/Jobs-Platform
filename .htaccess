@@ -7,10 +7,10 @@
 
     # Redirect everything to /public
     RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ /public/$1 [L]
+    #RewriteRule ^(.*)$ /public/- [L]
 
     # Handle index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [L]
+    #RewriteRule ^(.*)$ index.php [L]
 </IfModule>
