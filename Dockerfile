@@ -30,18 +30,16 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install PHP dependencies
 RUN composer install
 
-# Set Apache DocumentRoot to Laravel's public directory
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-
-# Enable site configuration
+# Enable the custom site configuration and disable the default one
 RUN a2ensite custom-apache.conf && a2dissite 000-default.conf
-RUN service apache2 reload
 
 # Ensure correct permissions for Laravel directories
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Update Apache to listen on port 10000
 RUN sed -i 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf
+
+# Expose port 10000
 EXPOSE 10000
 
 # Command to run the application
