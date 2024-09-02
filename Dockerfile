@@ -14,8 +14,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install zip \
     && docker-php-ext-install pdo_pgsql \
     && a2enmod rewrite
+
 # Copy the Apache configuration file
-COPY custom-apache.conf /etc/apache2/sites-available/000-default.conf
+COPY custom-apache.conf /etc/apache2/sites-available/
+
 # Set the working directory to the Laravel project
 WORKDIR /var/www/html/
 
@@ -26,17 +28,18 @@ COPY . /var/www/html/
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install PHP dependencies
-RUN composer install
+RUN composer install --optimize-autoloader --no-dev
 
-# Set Apache DocumentRoot to Laravel's public directory
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+# Enable the custom Apache configuration and disable the default one
+RUN a2ensite custom-apache.conf && a2dissite 000-default.conf
+
+# Update the port configuration to listen on port 10000
+RUN sed -i 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf
 
 # Ensure correct permissions for Laravel directories
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Add this in your Dockerfile or Apache config
-RUN sed -i 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf
-# Expose port 80
+# Expose port 10000
 EXPOSE 10000
 
 # Command to run the application
