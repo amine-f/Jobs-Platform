@@ -10,7 +10,7 @@ services:
       - "10000:10000"
     environment:
       - PORT=10000
-      - DB_HOST=db
+      - DB_HOST=dpg-cr71c53v2p9s73cl0l9g-a
       - DB_PORT=5432
       - DB_DATABASE=job_lister
       - DB_USERNAME=job_lister_user
@@ -19,6 +19,8 @@ services:
       - .:/var/www/html
     depends_on:
       - db
+    networks:
+      - app-network
 
   db:
     image: postgres:latest
@@ -31,6 +33,12 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
 
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge
