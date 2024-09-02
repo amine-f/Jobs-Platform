@@ -5,17 +5,12 @@
 
     RewriteEngine On
 
-    # Redirect all requests to the /public directory
+    # Redirect everything to /public
     RewriteCond %{REQUEST_URI} !^/public/
-    #RewriteCond %{REQUEST_URI} !^/index.php
     RewriteRule ^(.*)$ /public/$1 [L]
 
-    # Handle index.php in the public directory
+    # Handle index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /public/index.php [L]
-
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteRule ^(.*)$ index.php [L]
 </IfModule>
