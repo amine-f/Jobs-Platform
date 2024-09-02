@@ -15,8 +15,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        /* create admin, author and user */
-        /* password for these users is password */
+        /* create admin, author, and user */
+        /* password for these users is 'password' */
 
         $factoryUsers = [
             [
@@ -42,12 +42,18 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($factoryUsers as $user) {
-            $newUser =  User::factory()->create([
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'password' => $user['password'],
-            ]);
-            $newUser->assignRole($user['role']);
+            $newUser = User::updateOrCreate(
+                ['email' => $user['email']], // Check if the user with the email already exists
+                [
+                    'name' => $user['name'],
+                    'password' => $user['password'], // Assign the hashed password
+                ]
+            );
+
+            // Assign role if it hasn't been assigned yet
+            if (!$newUser->hasRole($user['role'])) {
+                $newUser->assignRole($user['role']);
+            }
         }
     }
 }
