@@ -10,7 +10,7 @@ services:
       - "10000:10000"
     environment:
       - PORT=10000
-      - DB_HOST=dpg-cr71c53v2p9s73cl0l9g-a
+      - DB_HOST=ep-morning-mountain-a2pbo4v1.eu-central-1.pg.koyeb.app
       - DB_PORT=5432
       - DB_DATABASE=job_lister
       - DB_USERNAME=job_lister_user

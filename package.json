@@ -12,13 +12,16 @@
     "devDependencies": {
         "axios": "^1.7.4",
         "cross-env": "^7.0",
+        "css-loader": "^7.1.2",
         "laravel-mix": "^6.0.49",
         "lodash": "^4.17.20",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.27.0",
         "sass-loader": "^10.0.3",
-        "vue-loader": "^15.9.8",
-        "vue-template-compiler": "^2.6.12",
+        "style-loader": "^4.0.0",
+        "vue": "^2.7.16",
+        "vue-loader": "^15.11.1",
+        "vue-template-compiler": "^0.1.0",
         "webpack": "^5.94.0",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.10.1"
@@ -28,7 +31,6 @@
         "jquery": "^3.5.1",
         "laravel-vue-pagination": "^2.3.1",
         "popper.js": "^1.16.1",
-        "vue": "^2.6.12",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.4.7"
     }

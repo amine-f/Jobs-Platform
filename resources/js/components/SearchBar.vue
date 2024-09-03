@@ -82,4 +82,4 @@ export default {
 .search-bar {
   background-color: #f5fdff;
 }
-</style>>
+</style>
