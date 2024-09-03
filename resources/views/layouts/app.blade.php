@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name')?? 'Jobs-platform' }}</title>
+    <title>{{ config('app.name')?? 'Jobs-platfom' }}</title>
 
     <!-- Scripts -->
 
@@ -26,7 +26,7 @@
     <div id="app">
        @yield('layout-holder')
     </div>
-    <!--@include('sweetalert::alert')-->
+    @include('sweetalert::alert')
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('js')
 </body>
