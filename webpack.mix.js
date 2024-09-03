@@ -1,9 +1,9 @@
-const mix = require("laravel-mix");
+const mix = require('laravel-mix');
 
 // Resolve issues with Vue components and other JavaScript files
-mix.js("resources/js/app.js", "public/js")
-    .vue() // Enable Vue component processing
-    .sass("resources/sass/app.scss", "public/css")
+mix.js('resources/js/app.js', 'public/js')
+    .vue({ version: 2 }) // Ensure Vue 2 is used
+    .sass('resources/sass/app.scss', 'public/css')
     .options({
         processCssUrls: false, // Avoid processing/rewriting URLs in CSS files
     })
@@ -12,7 +12,7 @@ mix.js("resources/js/app.js", "public/js")
             extensions: ['.js', '.vue', '.json'], // Ensures proper resolution of .vue files
             alias: {
                 'vue$': 'vue/dist/vue.esm.js', // Use the full build of Vue.js
-            }
+            },
         },
         output: {
             chunkFilename: 'js/[name].js', // Customize chunk filenames for better debugging
