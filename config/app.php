@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://jobs-platform-ibik.onrender.coms'),
+    'url' => env('APP_URL', 'https://jobs-platform-welink-1cb19867.koyeb.app/'),
 
     'asset_url' => env('ASSET_URL', null),
 
