@@ -1,6 +1,8 @@
 # About Jobs Platform
 
 Jobs Platform is a project developed by [Amine](https://github.com/amine-f) under the Welink Corp® banner. The platform is built using Laravel 8 and Vue.js and offers a robust user management system with roles and permissions for users, authors, and admins.
+here is the CloudServer link:
+jobs-platform-welink-1cb19867.koyeb.app/
 
 <br />
 >Installation instructions are provided at the bottom.
